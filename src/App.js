@@ -1,6 +1,5 @@
 import "./App.css";
 import { InputLink } from "./components/InputLink.jsx";
-import { Button } from "./components/Button.jsx";
 import { useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 

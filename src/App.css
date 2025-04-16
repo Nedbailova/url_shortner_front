@@ -1,0 +1,111 @@
+
+.container {
+  max-width: 810px;
+  /* padding: 103px 100px 85px 133px; */
+  padding: 100px;
+  box-sizing: border-box;
+  /* align-items: center; */
+  margin: 30px auto;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 20px;
+  border: 2px solid #000;
+}
+
+@media (max-width: 810px) {
+  body {
+    overflow-x: auto;
+  }
+}
+
+.input-block {
+  display: flex;
+  align-items: center; 
+  gap: 10px; 
+}
+
+.reduce-block{
+  margin-top: 5px;
+  width: 67%;
+  height: 135px;
+  border-radius: 20px;
+  padding: 10px 15px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content : space-between;
+}
+
+.copyable-text {
+  cursor: pointer; 
+  display: inline-block;
+  margin-right: 20px;
+}
+
+.copyable-text:hover {
+  text-decoration: underline;
+}
+
+.notification {
+  padding: 10px 12px;
+  color: #fff;
+  text-align: center;
+  background-color: #000;
+  border-radius: 5px;
+  animation: fadeInOut 1s ease-in-out; 
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; }
+  70% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+
+/* Tabs styles */
+.tabs-container {
+  margin-top: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.tabs-header {
+  display: flex;
+  background-color: #f5f5f5;
+}
+
+.tab-button {
+  flex: 1;
+  padding: 10px 0px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.tab-button:hover {
+  background-color: #e0e0e0;
+}
+
+.tab-button.active {
+  background-color: #fff;
+  font-weight: bold;
+}
+
+.tab-content {
+  padding: 20px;
+  background-color: #fff;
+}
+
+.delete-tab, .edit-tab, .redirect-tab {
+  display: flex;
+  gap: 10px;
+}
+
+.button.delete {
+  background-color: #dc3545;
+}
+
+.button.delete:hover {
+  background-color: #c82333;
+}

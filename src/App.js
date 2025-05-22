@@ -60,7 +60,7 @@ function App() {
         requestBody.alias = inputAliasValue.trim();
       }
 
-      const response = await fetch("http://url-shortener:8080/url", {
+      const response = await fetch("http://158.160.134.110:8080/url", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -125,7 +125,7 @@ function App() {
       console.log(`Updating alias from ${currentAlias} to ${newAlias}`);
 
       const response = await fetch(
-        `http://url-shortener:8080/url/${currentAlias}`,
+        `http://158.160.134.110:8080/url/${currentAlias}`,
         {
           method: "PUT",
           headers: {
@@ -195,7 +195,7 @@ function App() {
       const alias = inputAliasDelete;
       console.log("Deleting alias:", alias);
 
-      const response = await fetch(`http://url-shortener:8080/url/${alias}`, {
+      const response = await fetch(`http://158.160.134.110:8080/url/${alias}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -243,7 +243,7 @@ function App() {
       const alias = inputAliasRedirect;
       console.log("Alias:", alias);
 
-      const response = await fetch(`http://url-shortener:8080/${alias}`, {
+      const response = await fetch(`http://158.160.134.110:8080/${alias}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

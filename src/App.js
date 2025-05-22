@@ -31,69 +31,70 @@ function App() {
 
   const handleReduce = async () => {
     console.log("Starting URL shortening...");
-  
+
     if (!inputValue.trim()) {
       console.log("Empty input");
       setErrorMessage("Please enter a URL");
       SetErrorBlock(true);
       return;
     }
-  
+
     console.log("Input URL:", inputValue);
     const valid = /^(ftp|http|https):\/\/[^ "]+$/.test(inputValue);
-    
-    if (!valid){
+
+    if (!valid) {
       console.log("Error input");
-      setErrorMessage('Please enter the correct link!');
+      setErrorMessage("Please enter the correct link!");
       SetErrorBlock(true);
       return;
     }
-  
+
     try {
       console.log("Sending request to API...");
-      
+
       const requestBody = {
-        url: inputValue
+        url: inputValue,
       };
-      
+
       if (inputAliasValue.trim()) {
         requestBody.alias = inputAliasValue.trim();
       }
-  
-      const response = await fetch("http://84.201.181.188:8080/url", {
+
+      const response = await fetch("http://url-shortener:8080/url", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(requestBody),
       });
-  
+
       console.log("Received response:", response);
-  
+
       if (!response.ok) {
         const errorText = await response.text();
         console.error("API error:", errorText);
-        
+
         if (response.status === 409) {
-          setErrorMessage("This alias is already taken. Please choose another one.");
+          setErrorMessage(
+            "This alias is already taken. Please choose another one."
+          );
         } else {
           setErrorMessage("Failed to shorten URL");
         }
-        
+
         SetErrorBlock(true);
         return;
       }
-  
+
       const data = await response.json();
       console.log("API response data:", data);
-  
+
       setReduceLink(data.alias || "");
       SetNewBlock(true);
       SetErrorBlock(false);
       console.log("URL shortened successfully");
-      
+
       setInputAliasValue("");
-      
     } catch (error) {
       console.error("Request failed:", error);
       setErrorMessage("Network error, please try again");
@@ -107,7 +108,7 @@ function App() {
     setInputAliasEdit("");
     setInputAliasDelete("");
     setInputAliasRedirect("");
-    SetErrorBlockTwo(false)
+    SetErrorBlockTwo(false);
   };
 
   const handleEditSubmit = async () => {
@@ -116,63 +117,66 @@ function App() {
       SetErrorBlockTwo(true);
       return;
     }
-  
+
     try {
       const currentAlias = editInput;
       const newAlias = inputAliasEdit.trim();
-  
+
       console.log(`Updating alias from ${currentAlias} to ${newAlias}`);
-  
-      const response = await fetch(`http://84.201.181.188:8080/url/${currentAlias}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          newAlias: newAlias
-        }),
-      });
+
+      const response = await fetch(
+        `http://url-shortener:8080/url/${currentAlias}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            newAlias: newAlias,
+          }),
+        }
+      );
 
       if (response.status === 400) {
         setErrorMessageTwo(`New alias must be different`);
         SetErrorBlockTwo(true);
         return;
       }
-  
+
       if (response.status === 404) {
         setErrorMessageTwo(`Alias "${currentAlias}" not found`);
         SetErrorBlockTwo(true);
         return;
       }
-  
+
       if (response.status === 409) {
         setErrorMessageTwo(`Alias "${newAlias}" already exists`);
         SetErrorBlockTwo(true);
         return;
       }
-  
+
       if (response.status === 500) {
         setErrorMessageTwo("Alias update problem. Please try again later.");
         SetErrorBlockTwo(true);
         return;
       }
-  
+
       if (!response.ok) {
         const errorText = await response.text();
         setErrorMessageTwo(errorText || "Failed to update alias");
         SetErrorBlockTwo(true);
         return;
       }
-  
+
       const data = await response.json();
       console.log("Alias updated successfully:", data);
-      
+
       setEditInput("");
       setInputAliasEdit("");
-      setErrorMessageTwo(`Alias changed from "${currentAlias}" to "${newAlias}" successfully!`);
+      setErrorMessageTwo(
+        `Alias changed from "${currentAlias}" to "${newAlias}" successfully!`
+      );
       SetErrorBlockTwo(true);
-    
-  
     } catch (error) {
       console.error("Edit failed:", error);
       setErrorMessageTwo("Network error. Please check your connection.");
@@ -186,43 +190,41 @@ function App() {
       SetErrorBlockTwo(true);
       return;
     }
-  
+
     try {
       const alias = inputAliasDelete;
       console.log("Deleting alias:", alias);
-  
-      const response = await fetch(`http://84.201.181.188:8080/url/${alias}`, {
+
+      const response = await fetch(`http://url-shortener:8080/url/${alias}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
       });
-  
+
       if (response.status === 404) {
         setErrorMessageTwo(`Alias "${alias}" not found`);
         SetErrorBlockTwo(true);
         return;
       }
-  
+
       if (response.status === 500) {
         setErrorMessageTwo("Alias deletion problem. Please try again later.");
         SetErrorBlockTwo(true);
         return;
       }
-  
+
       if (!response.ok) {
         const errorText = await response.text();
         setErrorMessageTwo(errorText || "Failed to delete URL");
         SetErrorBlockTwo(true);
         return;
       }
-  
+
       console.log("URL successfully deleted");
       setInputAliasDelete("");
       setErrorMessageTwo(`Alias "${alias}" deleted successfully!`);
       SetErrorBlockTwo(true);
-  
-  
     } catch (error) {
       console.error("Delete failed:", error);
       setErrorMessageTwo("Network error. Please check your connection.");
@@ -241,7 +243,7 @@ function App() {
       const alias = inputAliasRedirect;
       console.log("Alias:", alias);
 
-      const response = await fetch(`http://84.201.181.188:8080/${alias}`, {
+      const response = await fetch(`http://url-shortener:8080/${alias}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -347,7 +349,6 @@ function App() {
                 </button>
               </div>
             )}
-            
 
             {activeTab === "Delete" && (
               <div className="delete-tab">
@@ -366,13 +367,13 @@ function App() {
             {activeTab === "Edit" && (
               <div className="edit-tab">
                 <InputLink
-                className="input_alias"
+                  className="input_alias"
                   value={editInput}
                   onChange={setEditInput}
                   placeholder={"Input exist alias"}
                 />
                 <InputLink
-                className="input_alias"
+                  className="input_alias"
                   value={inputAliasEdit}
                   onChange={setInputAliasEdit}
                   placeholder={"Input new alias"}

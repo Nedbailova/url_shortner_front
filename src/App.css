@@ -103,9 +103,23 @@
 }
 
 .button.delete {
-  background-color: #dc3545;
+  background-color: #ffaeb6;
 }
 
 .button.delete:hover {
   background-color: #c82333;
 }
+
+.button {
+    border-radius: 12px;
+    background: #ffff;
+    border: 2px solid #000;
+    padding: 10px 12px;
+    cursor: pointer;
+
+  }
+  
+  .button:hover {
+    color: #FFF;
+    background: #000;
+  }

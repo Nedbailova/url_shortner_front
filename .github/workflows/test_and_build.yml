@@ -54,3 +54,29 @@ jobs:
         with:
           name: build
           path: build/
+
+  publish:
+    needs: [build, test]
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install & authenticate Yandex Cloud CLI
+        env:
+          YC_SERVICE_ACCOUNT_KEY: ${{ secrets.YC_SERVICE_ACCOUNT_KEY }}
+        run: |
+          curl https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash
+          sudo cp "$HOME/yandex-cloud/bin/yc" /usr/local/bin/yc
+
+          echo "$YC_SERVICE_ACCOUNT_KEY" > yc-key.json
+          yc config set service-account-key yc-key.json
+
+      - name: Configure Docker for Yandex Registry
+        run: yc container registry configure-docker
+
+      - name: Build and push Docker image
+        run: |
+          IMAGE=cr.yandex/crpdicuovcl5jupslln1/url-shortener-front:latest
+          docker build -t $IMAGE .
+          docker push $IMAGE

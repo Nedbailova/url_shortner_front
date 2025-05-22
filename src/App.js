@@ -40,6 +40,14 @@ function App() {
     }
   
     console.log("Input URL:", inputValue);
+    const valid = /^(ftp|http|https):\/\/[^ "]+$/.test(inputValue);
+    
+    if (!valid){
+      console.log("Error input");
+      setErrorMessage('Please enter the correct link!');
+      SetErrorBlock(true);
+      return;
+    }
   
     try {
       console.log("Sending request to API...");

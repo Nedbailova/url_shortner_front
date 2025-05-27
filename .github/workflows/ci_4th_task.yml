@@ -80,3 +80,44 @@ jobs:
           IMAGE=cr.yandex/crpdicuovcl5jupslln1/url-shortener-front:latest
           docker build -t $IMAGE .
           docker push $IMAGE
+
+  deploy:
+    needs: publish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install & authenticate Yandex Cloud CLI
+        env:
+          YC_SERVICE_ACCOUNT_KEY: ${{ secrets.YC_SERVICE_ACCOUNT_KEY }}
+        run: |
+          curl https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash
+          sudo cp "$HOME/yandex-cloud/bin/yc" /usr/local/bin/yc
+
+          echo "$YC_SERVICE_ACCOUNT_KEY" > yc-key.json
+          yc config set service-account-key yc-key.json
+
+      - name: Fetch Kubernetes credentials
+        env:
+          YC_CLOUD_ID:             ${{ secrets.YC_CLOUD_ID }}
+          YC_FOLDER_ID:            ${{ secrets.YC_FOLDER_ID }}
+          K8S_CLUSTER_ID:          ${{ secrets.K8S_CLUSTER_ID }}
+        run: |
+          yc config set cloud-id $YC_CLOUD_ID
+          yc config set folder-id $YC_FOLDER_ID
+          mkdir -p ~/.kube
+          yc managed-kubernetes cluster get-credentials \
+            --id $K8S_CLUSTER_ID \
+            --external \
+            --kubeconfig ~/.kube/config \
+            --force
+
+          # kubectl get nodes
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'v1.29.0'
+
+      - name: Restart backend Deployment
+        run: |
+          kubectl rollout restart deployment/url-shortener-front
+          kubectl rollout status deployment/url-shortener-front

@@ -20,38 +20,28 @@ function App() {
   const [editInput, setEditInput] = useState("");
 
   const handleCopyText = () => {
-    navigator.clipboard
-      .writeText(reduceLink)
-      .then(() => {
-        setIsCopied(true);
-        setTimeout(() => setIsCopied(false), 1000);
-      })
-      .catch((err) => console.error("Copy failed:", err));
+    navigator.clipboard.writeText(reduceLink).then(() => {
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 1000);
+    });
   };
 
   const handleReduce = async () => {
-    console.log("Starting URL shortening...");
-
     if (!inputValue.trim()) {
-      console.log("Empty input");
       setErrorMessage("Please enter a URL");
       SetErrorBlock(true);
       return;
     }
 
-    console.log("Input URL:", inputValue);
     const valid = /^(ftp|http|https):\/\/[^ "]+$/.test(inputValue);
 
     if (!valid) {
-      console.log("Error input");
       setErrorMessage("Please enter the correct link!");
       SetErrorBlock(true);
       return;
     }
 
     try {
-      console.log("Sending request to API...");
-
       const requestBody = {
         url: inputValue,
       };
@@ -67,8 +57,6 @@ function App() {
         },
         body: JSON.stringify(requestBody),
       });
-
-      console.log("Received response:", response);
 
       if (!response.ok) {
         const errorText = await response.text();
@@ -87,13 +75,9 @@ function App() {
       }
 
       const data = await response.json();
-      console.log("API response data:", data);
-
       setReduceLink(data.alias || "");
       SetNewBlock(true);
       SetErrorBlock(false);
-      console.log("URL shortened successfully");
-
       setInputAliasValue("");
     } catch (error) {
       console.error("Request failed:", error);
@@ -121,9 +105,6 @@ function App() {
     try {
       const currentAlias = editInput;
       const newAlias = inputAliasEdit.trim();
-
-      console.log(`Updating alias from ${currentAlias} to ${newAlias}`);
-
       const response = await fetch(
         `http://158.160.134.110:8080/url/${currentAlias}`,
         {
@@ -167,10 +148,6 @@ function App() {
         SetErrorBlockTwo(true);
         return;
       }
-
-      const data = await response.json();
-      console.log("Alias updated successfully:", data);
-
       setEditInput("");
       setInputAliasEdit("");
       setErrorMessageTwo(
@@ -193,8 +170,6 @@ function App() {
 
     try {
       const alias = inputAliasDelete;
-      console.log("Deleting alias:", alias);
-
       const response = await fetch(`http://158.160.134.110:8080/url/${alias}`, {
         method: "DELETE",
         headers: {
@@ -221,7 +196,6 @@ function App() {
         return;
       }
 
-      console.log("URL successfully deleted");
       setInputAliasDelete("");
       setErrorMessageTwo(`Alias "${alias}" deleted successfully!`);
       SetErrorBlockTwo(true);
@@ -241,8 +215,6 @@ function App() {
 
     try {
       const alias = inputAliasRedirect;
-      console.log("Alias:", alias);
-
       const response = await fetch(`http://158.160.134.110:8080/${alias}`, {
         method: "GET",
         headers: {
@@ -251,8 +223,6 @@ function App() {
       });
 
       const data = await response.json();
-      console.log("Response data:", data);
-
       if (data.url) {
         window.open(data.url, "_blank");
       } else {

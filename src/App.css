@@ -1,10 +1,8 @@
 
 .container {
   max-width: 810px;
-  /* padding: 103px 100px 85px 133px; */
   padding: 100px;
   box-sizing: border-box;
-  /* align-items: center; */
   margin: 30px auto;
   background-color: rgba(255, 255, 255, 0.7);
   border-radius: 20px;

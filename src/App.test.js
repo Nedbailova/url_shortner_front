@@ -119,7 +119,7 @@ describe("App", () => {
     render(<App />);
     fireEvent.click(screen.getAllByText("Edit")[0]);
     fireEvent.click(screen.getAllByText("Update")[0]);
-    expect(screen.getByText("Please enter both current and new aliasq")).toBeInTheDocument();
+    expect(screen.getByText("Please enter both current and new alias")).toBeInTheDocument();
   });
   
 });

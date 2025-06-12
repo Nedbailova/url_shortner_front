@@ -155,7 +155,7 @@ describe("App", () => {
 
     await waitFor(() => {
       expect(global.fetch).toHaveBeenCalledWith(
-        "http://158.160.134.110:8080/abc123",
+        "http://84.201.149.218:8080/abc123",
         expect.objectContaining({ method: "GET" })
       );
     });
@@ -296,38 +296,38 @@ describe("App", () => {
   });
 
   test("shows error when alias not found during delete", async () => {
-  global.fetch = jest.fn().mockResolvedValue({
-    status: 404,
-    text: async () => "Alias not found",
-  });
+    global.fetch = jest.fn().mockResolvedValue({
+      status: 404,
+      text: async () => "Alias not found",
+    });
 
-  render(<App />);
-  
-  fireEvent.click(screen.getAllByText("Delete")[0]); 
-  fireEvent.change(screen.getAllByPlaceholderText("Input alias")[1], {
-    target: { value: "delete-me" },
-  });
-  fireEvent.click(screen.getAllByText("Delete")[1]); 
+    render(<App />);
 
-  await screen.findByText('Alias "delete-me" not found');
-});
+    fireEvent.click(screen.getAllByText("Delete")[0]);
+    fireEvent.change(screen.getAllByPlaceholderText("Input alias")[1], {
+      target: { value: "delete-me" },
+    });
+    fireEvent.click(screen.getAllByText("Delete")[1]);
+
+    await screen.findByText('Alias "delete-me" not found');
+  });
 
   test("shows server error during delete", async () => {
-  global.fetch = jest.fn().mockResolvedValue({
-    status: 500,
-    text: async () => "Server error",
-  });
+    global.fetch = jest.fn().mockResolvedValue({
+      status: 500,
+      text: async () => "Server error",
+    });
 
-  render(<App />);
-  
-  fireEvent.click(screen.getAllByText("Delete")[0]);
-  fireEvent.change(screen.getAllByPlaceholderText("Input alias")[1], {
-    target: { value: "delete-me" },
-  });
-  fireEvent.click(screen.getAllByText("Delete")[1]);
+    render(<App />);
 
-  await screen.findByText("Alias deletion problem. Please try again later.");
-});
+    fireEvent.click(screen.getAllByText("Delete")[0]);
+    fireEvent.change(screen.getAllByPlaceholderText("Input alias")[1], {
+      target: { value: "delete-me" },
+    });
+    fireEvent.click(screen.getAllByText("Delete")[1]);
+
+    await screen.findByText("Alias deletion problem. Please try again later.");
+  });
 
   test("shows error for invalid URL format", async () => {
     render(<App />);
@@ -339,7 +339,6 @@ describe("App", () => {
       await screen.findByText("Please enter the correct link!")
     ).toBeInTheDocument();
   });
-
 
   test("handles network error in handleEditSubmit", async () => {
     global.fetch = jest.fn().mockRejectedValue(new Error("Network error"));

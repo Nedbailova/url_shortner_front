@@ -119,9 +119,10 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          IMAGE=cr.yandex/crpdicuovcl5jupslln1/url-shortener-front:latest
+          IMAGE=cr.yandex/crpqftu9a63clb7akat7/url-shortener-front:latest
           docker build -t $IMAGE .
           docker push $IMAGE
+
 
   deploy:
     needs: publish

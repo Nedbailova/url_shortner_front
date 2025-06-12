@@ -50,7 +50,7 @@ function App() {
         requestBody.alias = inputAliasValue.trim();
       }
 
-      const response = await fetch("http://158.160.134.110:8080/url", {
+      const response = await fetch("http://84.201.149.218:8080/url", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -106,7 +106,7 @@ function App() {
       const currentAlias = editInput;
       const newAlias = inputAliasEdit.trim();
       const response = await fetch(
-        `http://158.160.134.110:8080/url/${currentAlias}`,
+        `http://84.201.149.218:8080/url/${currentAlias}`,
         {
           method: "PUT",
           headers: {
@@ -170,7 +170,7 @@ function App() {
 
     try {
       const alias = inputAliasDelete;
-      const response = await fetch(`http://158.160.134.110:8080/url/${alias}`, {
+      const response = await fetch(`http://84.201.149.218:8080/url/${alias}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -215,7 +215,7 @@ function App() {
 
     try {
       const alias = inputAliasRedirect;
-      const response = await fetch(`http://158.160.134.110:8080/${alias}`, {
+      const response = await fetch(`http://84.201.149.218:8080/${alias}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

@@ -152,7 +152,6 @@ jobs:
             --id $K8S_CLUSTER_ID \
             --external \
             --kubeconfig ~/.kube/config \
-            --force
 
           # kubectl get nodes
       - name: Set up kubectl
